@@ -23,7 +23,7 @@ public class Main {
 	public static void main(String args[]) {
 		// You need the desktop to create a document
 		// The getDesktop method does the UNO bootstrapping, gets the
-		// remote servie manager and the desktop object.
+		// remote service manager and the desktop object.
 		XDesktop xDesktop = null;
 		xDesktop = getDesktop();
 
