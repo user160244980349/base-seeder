@@ -1,8 +1,22 @@
 package com.core;
 
+import com.sun.star.beans.PropertyValue;
+import com.sun.star.beans.XPropertySet;
+import com.sun.star.comp.helper.Bootstrap;
+import com.sun.star.frame.XComponentLoader;
+import com.sun.star.frame.XDesktop;
+import com.sun.star.lang.XComponent;
+import com.sun.star.lang.XMultiComponentFactory;
+import com.sun.star.text.ControlCharacter;
+import com.sun.star.text.XText;
+import com.sun.star.text.XTextCursor;
+import com.sun.star.text.XTextDocument;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.Exception;
 import com.sun.star.comp.helper.BootstrapException;
+import com.sun.star.uno.XComponentContext;
+import com.sun.star.util.XReplaceDescriptor;
+import com.sun.star.util.XReplaceable;
 
 public class Main {
 
@@ -10,10 +24,10 @@ public class Main {
         // You need the desktop to create a document
         // The getDesktop method does the UNO bootstrapping, gets the
         // remote servie manager and the desktop object.
-        com.sun.star.frame.XDesktop xDesktop = null;
+        XDesktop xDesktop = null;
         xDesktop = getDesktop();
 
-        com.sun.star.text.XTextDocument xTextDocument =
+        XTextDocument xTextDocument =
                 createTextdocument( xDesktop );
 
         createExampleData( xTextDocument );
@@ -23,11 +37,11 @@ public class Main {
         String mUSWords[] = { "color", "neighbor", "center", "behavior",
                 "meter", "thru" };
 
-        com.sun.star.util.XReplaceDescriptor xReplaceDescr = null;
-        com.sun.star.util.XReplaceable xReplaceable = null;
+        XReplaceDescriptor xReplaceDescr = null;
+        XReplaceable xReplaceable = null;
 
         xReplaceable = UnoRuntime.queryInterface(
-                com.sun.star.util.XReplaceable.class, xTextDocument);
+                XReplaceable.class, xTextDocument);
 
         // You need a descriptor to set properies for Replace
         xReplaceDescr = xReplaceable.createReplaceDescriptor();
@@ -51,21 +65,21 @@ public class Main {
     }
 
     private static void createExampleData(
-            com.sun.star.text.XTextDocument xTextDocument)
+            XTextDocument xTextDocument)
     {
         // Create textdocument and insert example text
-        com.sun.star.text.XTextCursor xTextCursor = null;
+        XTextCursor xTextCursor = null;
 
         try {
             xTextCursor = xTextDocument.getText().createTextCursor();
-            com.sun.star.text.XText xText = xTextDocument.getText();
+            XText xText = xTextDocument.getText();
 
             xText.insertString( xTextCursor,
                     "He nervously looked all around. Suddenly he saw his ", false );
 
             xText.insertString( xTextCursor, "neighbour ", true );
-            com.sun.star.beans.XPropertySet xCPS = UnoRuntime.queryInterface(
-                    com.sun.star.beans.XPropertySet.class, xTextCursor);
+            XPropertySet xCPS = UnoRuntime.queryInterface(
+                    XPropertySet.class, xTextCursor);
             // Set the word blue
             xCPS.setPropertyValue( "CharColor", 255);
             // Go to last character
@@ -76,7 +90,7 @@ public class Main {
 
             xText.insertString( xTextCursor, "centre ", true );
             xCPS = UnoRuntime.queryInterface(
-                    com.sun.star.beans.XPropertySet.class, xTextCursor);
+                    XPropertySet.class, xTextCursor);
             // Set the word blue
             xCPS.setPropertyValue( "CharColor", 255);
             // Go to last character
@@ -86,7 +100,7 @@ public class Main {
             xText.insertString( xTextCursor, "of the sidewalk.", false );
 
             xText.insertControlCharacter( xTextCursor,
-                    com.sun.star.text.ControlCharacter.PARAGRAPH_BREAK, false );
+                    ControlCharacter.PARAGRAPH_BREAK, false );
             xText.insertString( xTextCursor, "He tried to nervously tap his way along in the inky darkness and suddenly stiffened: it was a dead-end, he would have to go back the way he had come.", false );
 
             xTextCursor.gotoStart(false);
@@ -97,15 +111,15 @@ public class Main {
 
     }
 
-    private static com.sun.star.frame.XDesktop getDesktop() {
-        com.sun.star.frame.XDesktop xDesktop = null;
-        com.sun.star.lang.XMultiComponentFactory xMCF = null;
+    private static XDesktop getDesktop() {
+        XDesktop xDesktop = null;
+        XMultiComponentFactory xMCF = null;
 
         try {
-            com.sun.star.uno.XComponentContext xContext = null;
+            XComponentContext xContext = null;
 
             // get the remote office component context
-            xContext = com.sun.star.comp.helper.Bootstrap.bootstrap();
+            xContext = Bootstrap.bootstrap();
 
             // get the remote office service manager
             xMCF = xContext.getServiceManager();
@@ -115,7 +129,7 @@ public class Main {
                 Object oDesktop = xMCF.createInstanceWithContext(
                         "com.sun.star.frame.Desktop", xContext);
                 xDesktop = UnoRuntime.queryInterface(
-                        com.sun.star.frame.XDesktop.class, oDesktop);
+                        XDesktop.class, oDesktop);
             }
             else
                 System.out.println( "Can't create a desktop. No connection, no remote office servicemanager available!" );
@@ -129,33 +143,33 @@ public class Main {
     }
 
     private static com.sun.star.text.XTextDocument createTextdocument(
-            com.sun.star.frame.XDesktop xDesktop)
+            XDesktop xDesktop)
     {
-        com.sun.star.text.XTextDocument aTextDocument = null;
+        XTextDocument aTextDocument = null;
 
-        com.sun.star.lang.XComponent xComponent = CreateNewDocument(xDesktop,
+        XComponent xComponent = CreateNewDocument(xDesktop,
                 "swriter");
         aTextDocument = UnoRuntime.queryInterface(
-                com.sun.star.text.XTextDocument.class, xComponent);
+                XTextDocument.class, xComponent);
 
         return aTextDocument;
     }
 
 
-    private static com.sun.star.lang.XComponent CreateNewDocument(
-            com.sun.star.frame.XDesktop xDesktop,
+    private static XComponent CreateNewDocument(
+            XDesktop xDesktop,
             String sDocumentType)
     {
         String sURL = "private:factory/" + sDocumentType;
 
-        com.sun.star.lang.XComponent xComponent = null;
-        com.sun.star.frame.XComponentLoader xComponentLoader = null;
-        com.sun.star.beans.PropertyValue xEmptyArgs[] =
-                new com.sun.star.beans.PropertyValue[0];
+        XComponent xComponent = null;
+        XComponentLoader xComponentLoader = null;
+        PropertyValue xEmptyArgs[] =
+                new PropertyValue[0];
 
         try {
             xComponentLoader = UnoRuntime.queryInterface(
-                    com.sun.star.frame.XComponentLoader.class, xDesktop);
+                    XComponentLoader.class, xDesktop);
 
             xComponent  = xComponentLoader.loadComponentFromURL(
                     sURL, "_blank", 0, xEmptyArgs);
