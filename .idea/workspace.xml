@@ -46,8 +46,8 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="870" />
-    <option name="width" value="2348" />
-    <option name="height" value="2111" />
+    <option name="width" value="2349" />
+    <option name="height" value="2112" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -104,7 +104,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="com.core.Main" />
       <module name="base-seeder" />
@@ -122,10 +122,6 @@
         </pattern>
       </extension>
     </configuration>
-    <list>
-      <item itemvalue="Application.Main" />
-      <item itemvalue="Application.Main" />
-    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
