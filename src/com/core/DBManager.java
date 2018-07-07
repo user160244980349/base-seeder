@@ -7,14 +7,18 @@ import com.sun.star.sdb.XOfficeDatabaseDocument;
 
 public class DBManager {
 
-	public static void plug() {
+	private String fileName = null;
+	XOfficeDatabaseDocument odbDoc = null;
 
-		Lo.officePath = "C:/Program Files/LibreOffice/program/";
-		XComponentLoader xComponentLoader = Lo.loadOffice();
-		XOfficeDatabaseDocument odbDoc = Base.openBaseDoc("./liangTables.odb", xComponentLoader);
-		Base.closeBaseDoc(odbDoc);
-		Lo.closeOffice();
-
+	public DBManager(String fileName) {
+		this.fileName = fileName;
 	}
 
+	public void open(XComponentLoader loader) {
+		odbDoc = Base.openBaseDoc(fileName, loader);
+	}
+
+	public void close() {
+		Base.closeBaseDoc(odbDoc);
+	}
 }
