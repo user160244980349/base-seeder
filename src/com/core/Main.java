@@ -2,7 +2,7 @@ package com.core;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.XPropertySet;
-import com.sun.star.comp.helper.Bootstrap;
+import ooo.connector.BootstrapSocketConnector;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XDesktop;
 import com.sun.star.lang.XComponent;
@@ -116,7 +116,8 @@ public class Main {
 			XComponentContext xContext = null;
 
 			// get the remote office component context
-			xContext = Bootstrap.bootstrap();
+			String oooExeFolder = "C:/Program Files/LibreOffice/program/";
+			xContext =  BootstrapSocketConnector.bootstrap(oooExeFolder);
 
 			// get the remote office service manager
 			xMCF = xContext.getServiceManager();
