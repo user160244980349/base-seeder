@@ -20,7 +20,12 @@ import com.sun.star.util.XReplaceable;
 
 public class Main {
 
+
 	public static void main(String args[]) {
+		DBManager.plug();
+	}
+
+	public static void old_main() {
 		// You need the desktop to create a document
 		// The getDesktop method does the UNO bootstrapping, gets the
 		// remote servie manager and the desktop object.
