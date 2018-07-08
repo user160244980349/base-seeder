@@ -61,8 +61,6 @@ import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.CloseVetoException;
 import com.sun.star.util.XCloseable;
-import ooo.connector.BootstrapPipeConnector;
-import ooo.connector.BootstrapSocketConnector;
 
 import java.net.URLClassLoader;
 import java.util.ArrayList;
