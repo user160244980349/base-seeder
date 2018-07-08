@@ -56,6 +56,7 @@ public class TableManager {
 				}
 
 				System.out.println(tableElements[0]);
+				Lo.closeDoc(xComp);
 			} else
 				System.exit(1);
 		} catch (java.lang.Exception e) {
