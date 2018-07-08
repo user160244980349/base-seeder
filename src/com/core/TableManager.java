@@ -7,6 +7,8 @@ import com.sun.star.frame.XComponentLoader;
 import com.sun.star.sdbcx.XTablesSupplier;
 import com.sun.star.table.CellContentType;
 import com.sun.star.table.XCell;
+import com.sun.star.table.XTableColumns;
+import com.sun.star.table.XTableRows;
 import com.sun.star.text.*;
 import com.sun.star.uno.UnoRuntime;
 
@@ -60,13 +62,21 @@ public class TableManager {
                 Object table = xNameAccess.getByName(tableElements[0]);
                 XTextTable aTextTable = UnoRuntime.queryInterface(XTextTable.class, table);
                 XTextTableCursor xTableCursor = aTextTable.createCursorByCellName("A1");
-                // loop
-                String sCellName = xTableCursor.getRangeName();
 
-                XTextRange xTextRange = UnoRuntime.queryInterface(XText.class, aTextTable.getCellByName(sCellName));
-                xTextRange.getString();
+                XTableRows rows = aTextTable.getRows();
+                XTableColumns cols = aTextTable.getColumns();
+                System.out.println(rows.getCount() + " " + cols.getCount());
 
-                System.out.println(xTextRange.getString());
+                for (int i = 1; i < rows.getCount(); i++) {
+                    xTableCursor.goDown((short)1, false);
+                    String sCellName = xTableCursor.getRangeName();
+
+                    XTextRange xTextRange = UnoRuntime.queryInterface(XText.class, aTextTable.getCellByName(sCellName));
+                    xTextRange.getString();
+
+                    System.out.println(xTextRange.getString());
+                }
+
                 System.out.println(tableElements[0]);
 
                 System.exit(0);
