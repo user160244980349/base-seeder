@@ -12,43 +12,36 @@ package com.core.utilities;
      https://forum.openoffice.org/en/forum/viewtopic.php?f=25&t=44291
 */
 
+import com.sun.star.beans.PropertyValue;
 import com.sun.star.frame.*;
-import com.sun.star.beans.*;
-import com.sun.star.util.*;
+import com.sun.star.util.URL;
 
 
+public class ItemInterceptor implements XDispatchProviderInterceptor, XDispatch {
+	private XDispatchProvider slaveDP, masterDP;
+	// pointers to next and previous dispatch providers in chain
 
-public class ItemInterceptor implements XDispatchProviderInterceptor, XDispatch
-{
-  private XDispatchProvider slaveDP, masterDP;
-             // pointers to next and previous dispatch providers in chain
-
-  private ToolbarItemListener viewer;   // object sent dispatch info
-  private String itemName;  // toolbar item name
-  private String cmd;       // toolbar item's dispatch command
+	private ToolbarItemListener viewer;   // object sent dispatch info
+	private String itemName;  // toolbar item name
+	private String cmd;       // toolbar item's dispatch command
 
 
+	public ItemInterceptor(ToolbarItemListener v, String itemName) {
+		viewer = v;
+		this.itemName = itemName;
+		cmd = Lo.makeUnoCmd(itemName);
+	}
 
 
-  public ItemInterceptor(ToolbarItemListener v, String itemName) 
-  {  viewer = v;  
-     this.itemName = itemName;
-     cmd = Lo.makeUnoCmd(itemName);
-  }
+	public XDispatch[] queryDispatches(DispatchDescriptor[] descrs) {
+		int count = descrs.length;
+		XDispatch[] xDispatch = new XDispatch[count];
 
-
-
-
-  public XDispatch[] queryDispatches(DispatchDescriptor[] descrs) 
-  { 
-    int count = descrs.length; 
-    XDispatch[] xDispatch = new XDispatch[count]; 
-
-    for (int i = 0; i < count; i++) 
-      xDispatch[i] = queryDispatch(descrs[i].FeatureURL, descrs[i].FrameName, 
-                                   descrs[i].SearchFlags); 
-    return xDispatch; 
-  }  // end of queryDispatches()
+		for (int i = 0; i < count; i++)
+			xDispatch[i] = queryDispatch(descrs[i].FeatureURL, descrs[i].FrameName,
+					descrs[i].SearchFlags);
+		return xDispatch;
+	}  // end of queryDispatches()
 
 
 /*
@@ -62,52 +55,56 @@ public class ItemInterceptor implements XDispatchProviderInterceptor, XDispatch
 */
 
 
-  public XDispatch queryDispatch(URL cmdURL, String target, int srchFlags)
+	public XDispatch queryDispatch(URL cmdURL, String target, int srchFlags)
   /* intercept command URLs --
        if the command is the toolbar item command then use this object,
        otherwise ignore the command 
-  */
-  {
-    // System.out.println("queryDispatch: " + cmdURL.Complete);
+  */ {
+		// System.out.println("queryDispatch: " + cmdURL.Complete);
 
-    if (cmdURL.Complete.equalsIgnoreCase(cmd))  {
-      System.out.println(itemName + " seen"); 
-      return this;   // this will cause dispatch() to be called
-    }
+		if (cmdURL.Complete.equalsIgnoreCase(cmd)) {
+			System.out.println(itemName + " seen");
+			return this;   // this will cause dispatch() to be called
+		}
 
-    if (slaveDP != null)
-      return slaveDP.queryDispatch(cmdURL, target, srchFlags); 
-        // pass command to next interceptor in list
-    else
-      return null;
-  }  // end of queryDispatch()
+		if (slaveDP != null)
+			return slaveDP.queryDispatch(cmdURL, target, srchFlags);
+			// pass command to next interceptor in list
+		else
+			return null;
+	}  // end of queryDispatch()
 
+	public XDispatchProvider getMasterDispatchProvider() {
+		return masterDP;
+	}
 
+	public void setMasterDispatchProvider(XDispatchProvider dp) {
+		masterDP = dp;
+	}
 
-  public void setMasterDispatchProvider(XDispatchProvider dp)
-  {  masterDP = dp;  }
+	public XDispatchProvider getSlaveDispatchProvider() {
+		return slaveDP;
+	}
 
-  public void setSlaveDispatchProvider(XDispatchProvider dp)
-  {  slaveDP = dp;  }
-
-  public XDispatchProvider getMasterDispatchProvider()
-  {  return masterDP;  }
-
-  public XDispatchProvider getSlaveDispatchProvider()
-  {  return slaveDP;  }
-
-
-  // ----------------------- XDispatch methods ---------------------
-  
-
-   public void dispatch(URL cmdURL, PropertyValue[] props) 
-   // pass command details to the viewer
-   {  viewer.clicked(itemName, cmdURL, props);  }
+	public void setSlaveDispatchProvider(XDispatchProvider dp) {
+		slaveDP = dp;
+	}
 
 
-   public void addStatusListener(XStatusListener status, URL url) { }
+	// ----------------------- XDispatch methods ---------------------
 
-   public void removeStatusListener(XStatusListener status, URL url) { }
+	public void dispatch(URL cmdURL, PropertyValue[] props)
+	// pass command details to the viewer
+	{
+		viewer.clicked(itemName, cmdURL, props);
+	}
+
+
+	public void addStatusListener(XStatusListener status, URL url) {
+	}
+
+	public void removeStatusListener(XStatusListener status, URL url) {
+	}
 
 
 }  // end of ItemInterceptor class

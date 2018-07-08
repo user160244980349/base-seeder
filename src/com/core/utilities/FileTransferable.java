@@ -10,52 +10,49 @@ package com.core.utilities;
 */
 
 
-import java.nio.file.*;
+import com.sun.star.datatransfer.DataFlavor;
+import com.sun.star.datatransfer.UnsupportedFlavorException;
+import com.sun.star.datatransfer.XTransferable;
+import com.sun.star.uno.Type;
 
-import com.sun.star.datatransfer.*;
-import com.sun.star.uno.*;
-
-
-
-public class FileTransferable implements XTransferable
-{
-  private String mimeType = "application/octet-stream";   // good default
-  private byte[] fileData = null;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
-  public FileTransferable(String fnm)
-  {  
-    mimeType = Info.getMIMEType(fnm);
-    // System.out.println("MIME Type: " + mimeType);
-    try {
-      fileData = Files.readAllBytes( Paths.get(fnm));
-      // System.out.println("Length of byte array for " + fnm + ": " + fileData.length);
-    }
-    catch(java.lang.Exception e)
-    {  System.out.println("Could not read bytes from " + fnm);  }
-  }  // end of FileTransferable()
+public class FileTransferable implements XTransferable {
+	private String mimeType = "application/octet-stream";   // good default
+	private byte[] fileData = null;
 
 
-
-  public Object getTransferData(DataFlavor df) throws UnsupportedFlavorException
-  {
-    if (!df.MimeType.equalsIgnoreCase(mimeType))
-      throw new UnsupportedFlavorException();
-    return fileData;
-  }  // end of getTransferData()
-
-
-
-  public DataFlavor[] getTransferDataFlavors()
-  {
-    DataFlavor[] flavors = new DataFlavor[1];
-    flavors[0] = new DataFlavor(mimeType, mimeType, new Type(byte[].class));
-    return flavors;
-  }
+	public FileTransferable(String fnm) {
+		mimeType = Info.getMIMEType(fnm);
+		// System.out.println("MIME Type: " + mimeType);
+		try {
+			fileData = Files.readAllBytes(Paths.get(fnm));
+			// System.out.println("Length of byte array for " + fnm + ": " + fileData.length);
+		} catch (java.lang.Exception e) {
+			System.out.println("Could not read bytes from " + fnm);
+		}
+	}  // end of FileTransferable()
 
 
-  public boolean isDataFlavorSupported(DataFlavor df)
-  {  return df.MimeType.equalsIgnoreCase(mimeType);  }
+	public Object getTransferData(DataFlavor df) throws UnsupportedFlavorException {
+		if (!df.MimeType.equalsIgnoreCase(mimeType))
+			throw new UnsupportedFlavorException();
+		return fileData;
+	}  // end of getTransferData()
+
+
+	public DataFlavor[] getTransferDataFlavors() {
+		DataFlavor[] flavors = new DataFlavor[1];
+		flavors[0] = new DataFlavor(mimeType, mimeType, new Type(byte[].class));
+		return flavors;
+	}
+
+
+	public boolean isDataFlavorSupported(DataFlavor df) {
+		return df.MimeType.equalsIgnoreCase(mimeType);
+	}
 
 }  // end of FileTransferable class
 

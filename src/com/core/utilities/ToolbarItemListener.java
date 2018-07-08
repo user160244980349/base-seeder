@@ -6,12 +6,11 @@ package com.core.utilities;
    object. See ItemInterceptor.java in this folder.
 */
 
-import com.sun.star.beans.*;
-import com.sun.star.util.*;
+import com.sun.star.beans.PropertyValue;
+import com.sun.star.util.URL;
 
 
-public interface ToolbarItemListener 
-{
-  void clicked(String itemName, URL cmdURL, PropertyValue[] props);
+public interface ToolbarItemListener {
+	void clicked(String itemName, URL cmdURL, PropertyValue[] props);
 
 }

@@ -23,197 +23,183 @@ package com.core.utilities;
       http:// books.evc-cit.info/apb.php
 */
 
-import java.io.*;
-import java.util.*;
-import java.net.URL;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
-import javax.xml.parsers.*;
-
-import org.xml.sax.*;
-
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.*;
-import javax.xml.transform.stream.*;
-import javax.xml.transform.dom.*;
-
-import org.w3c.dom.*;
-
-
-public class XML
-{
-  private static final String INDENT_FNM = "indent.xsl";
-      // for indenting XML tags, and adding newlines between tags
-
-
-  // ---------------------- XML Document IO --------------------
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.net.URL;
+import java.util.ArrayList;
 
 
-  public static Document loadDoc(String fnm)
-  {
-    Document doc = null;
-    try {
-      DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-      dbf.setValidating(false);
-      dbf.setNamespaceAware(true);  // false);
-      DocumentBuilder db = dbf.newDocumentBuilder();
-      doc = db.parse(new FileInputStream(new File(fnm)));
-    }
-    catch (Exception e) {
-      System.out.println(e);
-    }
-    return doc;
-  }  // end of loadDoc()
+public class XML {
+	private static final String INDENT_FNM = "indent.xsl";
+	// for indenting XML tags, and adding newlines between tags
 
 
-
-  public static Document url2Doc(String urlStr)
-  {
-    Document doc = null;
-    try {
-      URL xmlUrl = new URL(urlStr);
-      DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-      dbf.setValidating(false);
-      dbf.setNamespaceAware(true);  // false);
-      DocumentBuilder db = dbf.newDocumentBuilder();
-      doc = db.parse(xmlUrl.openStream());
-    }
-    catch (Exception e) {
-      System.out.println(e);
-    }
-    return doc;
-  }  // end of url2Doc()
+	// ---------------------- XML Document IO --------------------
 
 
-
-  public static Document str2Doc(String xmlStr)
-  {
-    Document doc = null;
-    try {
-      DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-      dbf.setValidating(false);
-      dbf.setNamespaceAware(true);  // false);
-      DocumentBuilder db = dbf.newDocumentBuilder();
-      doc = db.parse(new InputSource(new StringReader(xmlStr)));
-    }
-    catch (Exception e) {
-      System.out.println(e);
-    }
-    return doc;
-  }  // end of str2Doc()
+	public static Document loadDoc(String fnm) {
+		Document doc = null;
+		try {
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			dbf.setValidating(false);
+			dbf.setNamespaceAware(true);  // false);
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			doc = db.parse(new FileInputStream(new File(fnm)));
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return doc;
+	}  // end of loadDoc()
 
 
-
-  public static void saveDoc(Document doc, String xmlFnm) 
-  // save doc to xmlFnm
-  {
-    try {
-      TransformerFactory tf = TransformerFactory.newInstance();
-      Transformer t = tf.newTransformer();
-      t.setOutputProperty(OutputKeys.INDENT, "yes");
-      t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-
-      DOMSource source = new DOMSource(doc);
-		  StreamResult result = new StreamResult(new File(xmlFnm));
- 
-		  // Output to console for testing
-		  // StreamResult result = new StreamResult(System.out);
-		  t.transform(source, result);
- 
-      System.out.println("Saved document to " + xmlFnm);
-    }
-    catch(Exception e)
-    {  System.out.println("Unable to save document to " + xmlFnm); 
-       System.out.println("  " + e);
-    }
-  }   // end of saveDoc()
+	public static Document url2Doc(String urlStr) {
+		Document doc = null;
+		try {
+			URL xmlUrl = new URL(urlStr);
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			dbf.setValidating(false);
+			dbf.setNamespaceAware(true);  // false);
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			doc = db.parse(xmlUrl.openStream());
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return doc;
+	}  // end of url2Doc()
 
 
+	public static Document str2Doc(String xmlStr) {
+		Document doc = null;
+		try {
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			dbf.setValidating(false);
+			dbf.setNamespaceAware(true);  // false);
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			doc = db.parse(new InputSource(new StringReader(xmlStr)));
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return doc;
+	}  // end of str2Doc()
 
 
-  // --------------- DOM data extraction -----------------------
+	public static void saveDoc(Document doc, String xmlFnm)
+	// save doc to xmlFnm
+	{
+		try {
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer t = tf.newTransformer();
+			t.setOutputProperty(OutputKeys.INDENT, "yes");
+			t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+
+			DOMSource source = new DOMSource(doc);
+			StreamResult result = new StreamResult(new File(xmlFnm));
+
+			// Output to console for testing
+			// StreamResult result = new StreamResult(System.out);
+			t.transform(source, result);
+
+			System.out.println("Saved document to " + xmlFnm);
+		} catch (Exception e) {
+			System.out.println("Unable to save document to " + xmlFnm);
+			System.out.println("  " + e);
+		}
+	}   // end of saveDoc()
 
 
-  public static Node getNode(String tagName, NodeList nodes) 
-  // return first tagName node from list
-  {
-    for (int i = 0; i < nodes.getLength(); i++) {
-      Node node = nodes.item(i);
-      if (node.getNodeName().equalsIgnoreCase(tagName))
-        return node;
-    }
-    return null;
-  }  // end of getNode()
- 
+	// --------------- DOM data extraction -----------------------
 
 
-  public static String getNodeValue(String tagName, NodeList nodes) 
-  // find first tagName node in the list, and return its text
-  {
-    if (nodes == null)
-      return "";
-
-    for (int i = 0; i < nodes.getLength(); i++) {
-      Node n = nodes.item(i);
-      if (n.getNodeName().equalsIgnoreCase(tagName))
-        return getNodeValue(n);
-    }
-    return "";
-  }  // end of getNodeValue()
-
- 
-
-  public static String getNodeValue(Node node) 
-  // return the text stored in the node
-  {
-    if (node == null)
-      return "";
-    NodeList childNodes = node.getChildNodes();
-    for (int i = 0; i < childNodes.getLength(); i++) {
-      Node n = childNodes.item(i);
-      if (n.getNodeType() == Node.TEXT_NODE)
-        return n.getNodeValue().trim();
-    }
-    return "";
-  }  // end of getNodeValue()
- 
+	public static Node getNode(String tagName, NodeList nodes)
+	// return first tagName node from list
+	{
+		for (int i = 0; i < nodes.getLength(); i++) {
+			Node node = nodes.item(i);
+			if (node.getNodeName().equalsIgnoreCase(tagName))
+				return node;
+		}
+		return null;
+	}  // end of getNode()
 
 
+	public static String getNodeValue(String tagName, NodeList nodes)
+	// find first tagName node in the list, and return its text
+	{
+		if (nodes == null)
+			return "";
 
-  public static ArrayList<String> getNodeValues(NodeList nodes) 
-  // return all the node values
-  {
-    if (nodes == null)
-      return null;
-
-    ArrayList<String> vals = new ArrayList<String>();
-    for (int i = 0; i < nodes.getLength(); i++) {
-       String val = getNodeValue(nodes.item(i));
-       if (val != null)
-         vals.add(val);
-    }
-    return vals;
-  }  // end of getNodeValues()
+		for (int i = 0; i < nodes.getLength(); i++) {
+			Node n = nodes.item(i);
+			if (n.getNodeName().equalsIgnoreCase(tagName))
+				return getNodeValue(n);
+		}
+		return "";
+	}  // end of getNodeValue()
 
 
-
-  public static String getNodeAttr(String attrName, Node node) 
-  // return the named attribute value from node
-  {
-    if (node == null)
-      return "";
-    NamedNodeMap attrs = node.getAttributes();
-    if (attrs == null)
-      return "";
-    for (int i = 0; i < attrs.getLength(); i++) {
-      Node attr = attrs.item(i);
-      if (attr.getNodeName().equalsIgnoreCase(attrName))
-        return attr.getNodeValue().trim();
-    }
-    return "";
-  }  // end of getNodeAttr()
- 
+	public static String getNodeValue(Node node)
+	// return the text stored in the node
+	{
+		if (node == null)
+			return "";
+		NodeList childNodes = node.getChildNodes();
+		for (int i = 0; i < childNodes.getLength(); i++) {
+			Node n = childNodes.item(i);
+			if (n.getNodeType() == Node.TEXT_NODE)
+				return n.getNodeValue().trim();
+		}
+		return "";
+	}  // end of getNodeValue()
 
 
-  public static Object[][] getAllNodeValues(NodeList rowNodes, String[] colIDs) 
+	public static ArrayList<String> getNodeValues(NodeList nodes)
+	// return all the node values
+	{
+		if (nodes == null)
+			return null;
+
+		ArrayList<String> vals = new ArrayList<String>();
+		for (int i = 0; i < nodes.getLength(); i++) {
+			String val = getNodeValue(nodes.item(i));
+			if (val != null)
+				vals.add(val);
+		}
+		return vals;
+	}  // end of getNodeValues()
+
+
+	public static String getNodeAttr(String attrName, Node node)
+	// return the named attribute value from node
+	{
+		if (node == null)
+			return "";
+		NamedNodeMap attrs = node.getAttributes();
+		if (attrs == null)
+			return "";
+		for (int i = 0; i < attrs.getLength(); i++) {
+			Node attr = attrs.item(i);
+			if (attr.getNodeName().equalsIgnoreCase(attrName))
+				return attr.getNodeValue().trim();
+		}
+		return "";
+	}  // end of getNodeAttr()
+
+
+	public static Object[][] getAllNodeValues(NodeList rowNodes, String[] colIDs)
   /* assumes an XML structure like:
 
        <rowID>
@@ -229,134 +215,122 @@ public class XML
     generated 2D array.
 
     The first row of the 2D array contains the col ID strings.
-  */
-  { 
-    int numRows = rowNodes.getLength();
-    int numCols = colIDs.length;
-    Object[][] data = new Object[numRows+1][numCols];
+  */ {
+		int numRows = rowNodes.getLength();
+		int numCols = colIDs.length;
+		Object[][] data = new Object[numRows + 1][numCols];
 
-    // put column strings in first row of array
-    for (int col = 0; col < numCols; col++)
-      data[0][col] = Lo.capitalize( colIDs[col]);
-      
-    for (int i = 0; i < numRows; i++) {
-      // extract all the column strings for ith row
-      NodeList colNodes = rowNodes.item(i).getChildNodes();
-      for (int col = 0; col < numCols; col++)
-         data[i+1][col] = getNodeValue(colIDs[col], colNodes);
-    }
-    return data;
-  }  // end of getAllNodeValues()
+		// put column strings in first row of array
+		for (int col = 0; col < numCols; col++)
+			data[0][col] = Lo.capitalize(colIDs[col]);
 
+		for (int i = 0; i < numRows; i++) {
+			// extract all the column strings for ith row
+			NodeList colNodes = rowNodes.item(i).getChildNodes();
+			for (int col = 0; col < numCols; col++)
+				data[i + 1][col] = getNodeValue(colIDs[col], colNodes);
+		}
+		return data;
+	}  // end of getAllNodeValues()
 
 
-  // ---------------------- String extraction --------------------------
+	// ---------------------- String extraction --------------------------
 
 
-  public static String getDocString(Document doc)
-  {
-    try {
-      TransformerFactory trf = TransformerFactory.newInstance();
-      Transformer tr = trf.newTransformer();
+	public static String getDocString(Document doc) {
+		try {
+			TransformerFactory trf = TransformerFactory.newInstance();
+			Transformer tr = trf.newTransformer();
 
-      DOMSource domSource = new DOMSource(doc);
+			DOMSource domSource = new DOMSource(doc);
 
-      StringWriter sw = new StringWriter();
-      StreamResult result = new StreamResult(sw);
+			StringWriter sw = new StringWriter();
+			StreamResult result = new StreamResult(sw);
 
-      tr.transform(domSource, result);
-      System.out.println("Extracting string from document");
-      String xmlStr = sw.toString();
-      return indent2Str(xmlStr);
-    }
-    catch(TransformerException ex) {
-      System.out.println("Could not convert document to a string");
-      return null;
-    }
-  }  // end of getDocString()
+			tr.transform(domSource, result);
+			System.out.println("Extracting string from document");
+			String xmlStr = sw.toString();
+			return indent2Str(xmlStr);
+		} catch (TransformerException ex) {
+			System.out.println("Could not convert document to a string");
+			return null;
+		}
+	}  // end of getDocString()
 
 
+	// ------------------------- XLS transforming ----------------------
 
 
-  // ------------------------- XLS transforming ----------------------
+	public static String applyXSLT(String xmlFnm, String xslFnm) {
+		try {
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Source xslt = new StreamSource(new File(xslFnm));
+			Transformer t = tf.newTransformer(xslt);
+
+			System.out.println("Applying filter " + xslFnm + " to " + xmlFnm);
+			Source text = new StreamSource(new File(xmlFnm));
+			StreamResult result = new StreamResult(new StringWriter());
+
+			t.transform(text, result);
+			return result.getWriter().toString();
+		} catch (Exception e) {
+			System.out.println("Unable to transform " + xmlFnm + " with " + xslFnm);
+			System.out.println("  " + e);
+			return null;
+		}
+	}   // end of applyXSLT()
 
 
-  public static String applyXSLT(String xmlFnm, String xslFnm) 
-  {
-    try {
-      TransformerFactory tf = TransformerFactory.newInstance();
-      Source xslt = new StreamSource(new File(xslFnm));
-      Transformer t = tf.newTransformer(xslt);
+	public static String applyXSLT2str(String xmlStr, String xslFnm) {
+		try {
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Source xslt = new StreamSource(new File(xslFnm));
+			Transformer t = tf.newTransformer(xslt);
 
-      System.out.println("Applying filter " + xslFnm + " to " + xmlFnm);
-      Source text = new StreamSource(new File(xmlFnm));
-      StreamResult result = new StreamResult(new StringWriter());
+			System.out.println("Applying the filter in " + xslFnm);
+			Source text = new StreamSource(new StringReader(xmlStr));
+			StreamResult result = new StreamResult(new StringWriter());
 
-      t.transform(text, result);
-      return result.getWriter().toString();
-    }
-    catch(Exception e)
-    {  System.out.println("Unable to transform " + xmlFnm + " with " + xslFnm); 
-       System.out.println("  " + e);
-       return null;
-    }
-  }   // end of applyXSLT()
-
+			t.transform(text, result);
+			return result.getWriter().toString();
+		} catch (Exception e) {
+			System.out.println("Unable to transform the string");
+			System.out.println("  " + e);
+			// e.printStackTrace();
+			return null;
+		}
+	}   // end of applyXSLT2str()
 
 
-
-  public static String applyXSLT2str(String xmlStr, String xslFnm) 
-  {
-    try {
-      TransformerFactory tf = TransformerFactory.newInstance();
-      Source xslt = new StreamSource(new File(xslFnm));
-      Transformer t = tf.newTransformer(xslt);
-      
-      System.out.println("Applying the filter in " + xslFnm);
-      Source text = new StreamSource(new StringReader(xmlStr));
-      StreamResult result = new StreamResult(new StringWriter());
-
-      t.transform(text, result);
-      return result.getWriter().toString();
-    }
-    catch(Exception e)
-    {  System.out.println("Unable to transform the string"); 
-       System.out.println("  " + e);
-       // e.printStackTrace();
-       return null;
-    }
-  }   // end of applyXSLT2str()
+	public static String indent(String xmlFnm) {
+		return applyXSLT(xmlFnm, FileIO.getUtilsFolder() + INDENT_FNM);
+	}
 
 
-
-  public static String indent(String xmlFnm) 
-  {  return applyXSLT(xmlFnm, FileIO.getUtilsFolder()+INDENT_FNM);  }
-
-
-  public static String indent2Str(String xmlStr) 
-  {  return applyXSLT2str(xmlStr, FileIO.getUtilsFolder()+INDENT_FNM);  }
+	public static String indent2Str(String xmlStr) {
+		return applyXSLT2str(xmlStr, FileIO.getUtilsFolder() + INDENT_FNM);
+	}
 
 
+	// --------------------- Flat XML filter selection ----------------
 
-  // --------------------- Flat XML filter selection ----------------
 
-
-  public static String getFlatFilterName(String docType)
-  // return the Flat XML filter name for the doc type
-  {
-    if (docType == Lo.WRITER_STR)
-      return "OpenDocument Text Flat XML";
-    else if (docType == Lo.CALC_STR)
-      return "OpenDocument Spreadsheet Flat XML";
-    else if (docType == Lo.DRAW_STR)
-      return "OpenDocument Drawing Flat XML";
-    else if (docType == Lo.IMPRESS_STR)
-      return "OpenDocument Presentation Flat XML";
-    else {
-      System.out.println("No Flat XML filter for this document type; using Flat text");
-      return "OpenDocument Text Flat XML";
-    }
-  }  // end of getFlatFilterName()
+	public static String getFlatFilterName(String docType)
+	// return the Flat XML filter name for the doc type
+	{
+		if (docType == Lo.WRITER_STR)
+			return "OpenDocument Text Flat XML";
+		else if (docType == Lo.CALC_STR)
+			return "OpenDocument Spreadsheet Flat XML";
+		else if (docType == Lo.DRAW_STR)
+			return "OpenDocument Drawing Flat XML";
+		else if (docType == Lo.IMPRESS_STR)
+			return "OpenDocument Presentation Flat XML";
+		else {
+			System.out.println("No Flat XML filter for this document type; using Flat text");
+			return "OpenDocument Text Flat XML";
+		}
+	}  // end of getFlatFilterName()
 
 
 }  // end of XML class

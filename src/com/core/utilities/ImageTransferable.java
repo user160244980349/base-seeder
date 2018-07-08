@@ -13,48 +13,45 @@ package com.core.utilities;
    See JImageTransferable for a non-Office, Java version.
 */
 
-import java.awt.image.*;
+import com.sun.star.datatransfer.DataFlavor;
+import com.sun.star.datatransfer.UnsupportedFlavorException;
+import com.sun.star.datatransfer.XTransferable;
+import com.sun.star.uno.Type;
 
-import com.sun.star.datatransfer.*;
-import com.sun.star.uno.*;
-
-
-
-public class ImageTransferable implements XTransferable
-{
-  private static final String BITMAP_CLIP = 
-        "application/x-openoffice-bitmap;windows_formatname=\"Bitmap\"";
-
-  private byte[] imBytes;   // see Dev Guide, p.685
-
-  public ImageTransferable(BufferedImage im)
-  {  imBytes = Images.im2bytes(im);   }
+import java.awt.image.BufferedImage;
 
 
+public class ImageTransferable implements XTransferable {
+	private static final String BITMAP_CLIP =
+			"application/x-openoffice-bitmap;windows_formatname=\"Bitmap\"";
 
-  public Object getTransferData(DataFlavor df) 
-                               throws UnsupportedFlavorException
-  {
-    if (!df.MimeType.equalsIgnoreCase(BITMAP_CLIP))
-      throw new UnsupportedFlavorException();
+	private byte[] imBytes;   // see Dev Guide, p.685
 
-    return imBytes;
-  }  // end of getTransferData()
-
-
+	public ImageTransferable(BufferedImage im) {
+		imBytes = Images.im2bytes(im);
+	}
 
 
-  public DataFlavor[] getTransferDataFlavors()
-  {
-    DataFlavor[] dfs = new DataFlavor[1];
-    dfs[0] = new DataFlavor(BITMAP_CLIP, "Bitmap", 
-                               new Type(byte[].class));  // see Dev Guide p.685
-    return dfs;
-  }
+	public Object getTransferData(DataFlavor df)
+			throws UnsupportedFlavorException {
+		if (!df.MimeType.equalsIgnoreCase(BITMAP_CLIP))
+			throw new UnsupportedFlavorException();
+
+		return imBytes;
+	}  // end of getTransferData()
 
 
-  public boolean isDataFlavorSupported(DataFlavor df)
-  {  return df.MimeType.equalsIgnoreCase(BITMAP_CLIP);  }
+	public DataFlavor[] getTransferDataFlavors() {
+		DataFlavor[] dfs = new DataFlavor[1];
+		dfs[0] = new DataFlavor(BITMAP_CLIP, "Bitmap",
+				new Type(byte[].class));  // see Dev Guide p.685
+		return dfs;
+	}
+
+
+	public boolean isDataFlavorSupported(DataFlavor df) {
+		return df.MimeType.equalsIgnoreCase(BITMAP_CLIP);
+	}
 
 }  // end of ImageTransferable class
 

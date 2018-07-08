@@ -13,10 +13,10 @@ public class Main {
 
 		XComponentLoader xComponentLoader = Lo.loadOffice();
 
-        TableManager tableManager = new TableManager();
+		TableManager tableManager = new TableManager();
 		DBManager dbManager = new DBManager(xComponentLoader, odbDoc);
 
-        tableManager.Run(xComponentLoader, odtDoc);
+		tableManager.Run(xComponentLoader, odtDoc);
 
 		dbManager.open();
 		dbManager.doSmth();

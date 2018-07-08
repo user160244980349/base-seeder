@@ -4,38 +4,41 @@ package com.core.utilities;
 
 // An Office transferable for unicode text
 
-import com.sun.star.datatransfer.*;
+import com.sun.star.datatransfer.DataFlavor;
+import com.sun.star.datatransfer.UnsupportedFlavorException;
+import com.sun.star.datatransfer.XTransferable;
 import com.sun.star.uno.Type;
 
 
-public class TextTransferable implements XTransferable
-{
-  private final String UNICODE_MIMETYPE = "text/plain;charset=utf-16";
+public class TextTransferable implements XTransferable {
+	private final String UNICODE_MIMETYPE = "text/plain;charset=utf-16";
 
-  private String text;
-
-
-  public TextTransferable(String s)
-  {  text = s;  }
+	private String text;
 
 
-  public Object getTransferData(DataFlavor df) 
-                                  throws UnsupportedFlavorException
-  { if (!df.MimeType.equalsIgnoreCase(UNICODE_MIMETYPE))
-      throw new UnsupportedFlavorException();
-    return text;
-  }
+	public TextTransferable(String s) {
+		text = s;
+	}
 
 
-  public DataFlavor[] getTransferDataFlavors()
-  { DataFlavor[] dfs = new DataFlavor[1];
-    dfs[0] = new DataFlavor(UNICODE_MIMETYPE, "Unicode Text",
-                                                  new Type(String.class));
-    return dfs;
-  }
+	public Object getTransferData(DataFlavor df)
+			throws UnsupportedFlavorException {
+		if (!df.MimeType.equalsIgnoreCase(UNICODE_MIMETYPE))
+			throw new UnsupportedFlavorException();
+		return text;
+	}
 
 
-  public boolean isDataFlavorSupported(DataFlavor df)
-  {  return df.MimeType.equalsIgnoreCase(UNICODE_MIMETYPE);  }
+	public DataFlavor[] getTransferDataFlavors() {
+		DataFlavor[] dfs = new DataFlavor[1];
+		dfs[0] = new DataFlavor(UNICODE_MIMETYPE, "Unicode Text",
+				new Type(String.class));
+		return dfs;
+	}
+
+
+	public boolean isDataFlavorSupported(DataFlavor df) {
+		return df.MimeType.equalsIgnoreCase(UNICODE_MIMETYPE);
+	}
 
 }  // end of TextTransferable class
