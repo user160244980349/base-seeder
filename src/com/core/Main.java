@@ -1,11 +1,25 @@
 package com.core;
 
+import com.core.utils.Lo;
+import com.sun.star.frame.XComponentLoader;
+
 public class Main {
 
 	public static void main(String args[]) {
-        String sUrl = "C:\\Users\\Aleksej\\Desktop\\Storage\\_Practice\\kek3.odt";
+
+		Lo.officePath = args[0];
+		String odtDoc = args[1];
+		String odbDoc = args[2];
+
+		XComponentLoader xComponentLoader = Lo.loadOffice();
+
         TableManager tableManager = new TableManager();
-        tableManager.Run(tableManager.GetLoader(), tableManager.GetPath(sUrl));
-		System.exit(0);
+        tableManager.Run(xComponentLoader, odtDoc);
+
+		DBManager dbManager = new DBManager(xComponentLoader, odbDoc);
+		dbManager.open();
+		dbManager.close();
+
+		Lo.closeOffice();
 	}
 }
