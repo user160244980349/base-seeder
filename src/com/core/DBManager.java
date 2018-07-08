@@ -51,7 +51,7 @@ public class DBManager {
 			XConnection connection = dataSource.getConnection("", "");
 
 			System.out.println();
-			XResultSet rs = Base.executeQuery("SELECT * FROM SPIES", connection);
+			XResultSet rs = Base.executeQuery("SELECT * FROM room", connection);
 			BaseTablePrinter.printResultSet(rs);
 
 		} catch (SQLException e) {
