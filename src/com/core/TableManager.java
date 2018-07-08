@@ -1,6 +1,6 @@
 package com.core;
 
-import com.core.utils.Lo;
+import com.core.utilities.Lo;
 import com.sun.star.container.XNameAccess;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.lang.XComponent;
