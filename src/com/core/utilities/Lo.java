@@ -361,16 +361,20 @@ public class Lo {
 	{
 		XComponentContext xcc = null;   // the remote office component context
 		try {
-			String[] cmdArray = new String[3];
-			cmdArray[0] = "soffice";
+			String[] cmdArray = new String[7];
+			cmdArray[0] = System.getProperty("os.name").startsWith("Windows")? "soffice.exe": "soffice";
 			// requires soffice to be in Windows PATH env var.
 			cmdArray[1] = "--headless";
-			cmdArray[2] = "--accept=socket,host=localhost,port=" +
-					SOCKET_PORT + ";urp;";
+			cmdArray[2] = "--norestore";
+			cmdArray[3] = "--nologo";
+			cmdArray[4] = "--norestore";
+			cmdArray[5] = "--nofirststartwizard";
+			cmdArray[6] = "--accept=socket,host=localhost,port=" +
+					SOCKET_PORT + ";urp;StarOffice.ServiceManager;";
 			Process p = Runtime.getRuntime().exec(cmdArray);
+			delay(5000);
 			if (p != null)
 				System.out.println("Office process created");
-			delay(5000);
 			// Wait 5 seconds, until office is in listening mode
 
 			// Create a local Component Context
