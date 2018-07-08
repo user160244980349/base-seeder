@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // JPrint.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, July 2016
 
@@ -13,7 +13,6 @@ package com.core.Utils;
 */
 
 import java.io.*;
-import java.awt.print.*;
 import java.util.*;
 
 import javax.print.*;

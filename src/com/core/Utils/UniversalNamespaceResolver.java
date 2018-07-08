@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // UniversalNamespaceResolver.java
 // http://www.ibm.com/developerworks/library/x-nmspccontext/
 

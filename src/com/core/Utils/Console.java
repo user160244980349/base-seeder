@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // Console.java
 
 // RJHM van den Bergh, rvdb@comweb.nl

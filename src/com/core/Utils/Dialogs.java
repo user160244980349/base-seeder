@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // Dialogs.java
 // Andrew Davison, October 2016, ad@fivedots.psu.ac.th
 
@@ -24,8 +24,6 @@ import com.sun.star.awt.*;
 import com.sun.star.beans.*;
 import com.sun.star.container.*;
 import com.sun.star.lang.*;
-import com.sun.star.uno.*;
-import com.sun.star.frame.*;
 
 import com.sun.star.uno.Exception;
 

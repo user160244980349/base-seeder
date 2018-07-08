@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // ToolbarItemListener.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, August 2016, 
 

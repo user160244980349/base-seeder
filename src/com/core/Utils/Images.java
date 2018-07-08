@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // Images.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, July 2016
 
@@ -15,26 +15,14 @@ import java.util.*;
 import java.awt.image.*;
 import javax.imageio.*;
 //import java.lang.reflect.Method;
-import java.net.*;
 
 import com.sun.star.beans.*;
-import com.sun.star.comp.helper.*;
-import com.sun.star.frame.*;
-import com.sun.star.connection.*;
-import com.sun.star.bridge.*;
-import com.sun.star.lang.*;
-import com.sun.star.text.*;
-import com.sun.star.uno.*;
 import com.sun.star.awt.*;
-import com.sun.star.util.*;
 import com.sun.star.document.*;
-import com.sun.star.view.*;
-import com.sun.star.ui.*;
 import com.sun.star.container.*;
 import com.sun.star.graphic.*;
 
 import com.sun.star.uno.Exception;
-import com.sun.star.io.IOException;
 
 // import com.sun.star.script.provider.XScriptContext;
 

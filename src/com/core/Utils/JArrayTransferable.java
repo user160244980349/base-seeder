@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // JArrayTransferable.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, July 2016
 
@@ -9,8 +9,6 @@ package com.core.Utils;
 */
 
 import java.io.*;
-import java.awt.*;
-import java.awt.image.*;
 import java.awt.datatransfer.*;
 
 

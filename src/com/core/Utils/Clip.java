@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // Clip.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, July 2016
 
@@ -27,20 +27,11 @@ package com.core.Utils;
 */
 
 
-import java.io.*;
 import java.awt.image.*;
-import javax.imageio.*;
 
-
-import com.sun.star.uno.*;
-import com.sun.star.frame.*;
-import com.sun.star.text.*;
 
 import com.sun.star.datatransfer.*;
 import com.sun.star.datatransfer.clipboard.*;
-import com.sun.star.lang.EventObject;
-
-
 
 
 public class Clip

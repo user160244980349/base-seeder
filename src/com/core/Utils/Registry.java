@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // Registry.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, September 2016
 
@@ -9,7 +9,6 @@ package com.core.Utils;
                      freedesktop/libreoffice/qadevOOo/runner/util/
 */
 
-import com.sun.star.uno.*;
 import com.sun.star.registry.*;
 
 

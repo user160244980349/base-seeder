@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // Base.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, February 2016
 

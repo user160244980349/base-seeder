@@ -1,2 +1,2 @@
-java -jar "base-seeder.jar"
+java -jar "base-seeder.jar" "officepath" "file" "dbase"
 pause

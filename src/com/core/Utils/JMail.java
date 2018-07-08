@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // JMail.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, July 2016
 
@@ -15,7 +15,7 @@ package com.core.Utils;
 
    -------
 
-   Office e-mail support functions are in Mail.java in the Utils/ folder.
+   Office e-mail support functions are in Mail.java in the utils/ folder.
 */
 
 

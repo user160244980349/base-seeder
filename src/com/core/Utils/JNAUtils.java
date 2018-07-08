@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // JNAUtils.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, March 2015
 
@@ -14,7 +14,6 @@ package com.core.Utils;
 
 
 import java.awt.*;
-import java.io.*;
 import java.util.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;

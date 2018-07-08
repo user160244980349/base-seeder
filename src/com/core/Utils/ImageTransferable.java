@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // ImageTransferable.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, July 2016
 
@@ -13,9 +13,7 @@ package com.core.Utils;
    See JImageTransferable for a non-Office, Java version.
 */
 
-import java.io.*;
 import java.awt.image.*;
-import javax.imageio.*;
 
 import com.sun.star.datatransfer.*;
 import com.sun.star.uno.*;

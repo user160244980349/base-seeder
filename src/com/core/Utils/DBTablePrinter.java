@@ -1,4 +1,4 @@
-package com.core.Utils;/*
+package com.core.utils;/*
 Database Table Printer
 Copyright (C) 2014  Hami Galip Torun
 

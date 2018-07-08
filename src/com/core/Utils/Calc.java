@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // Calc.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, September 2014
 
@@ -36,7 +36,6 @@ import com.sun.star.beans.*;
 import com.sun.star.frame.*;
 import com.sun.star.lang.*;
 import com.sun.star.text.*;
-import com.sun.star.uno.*;
 import com.sun.star.util.*;
 import com.sun.star.container.*;
 import com.sun.star.sheet.*;
@@ -45,7 +44,6 @@ import com.sun.star.table.*;
 import com.sun.star.view.*;
 
 import com.sun.star.uno.Exception;
-import com.sun.star.io.IOException;
 
 
 public class Calc

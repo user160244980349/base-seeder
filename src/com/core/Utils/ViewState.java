@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // ViewState.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, September 2015
 

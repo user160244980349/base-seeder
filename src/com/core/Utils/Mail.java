@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // Mail.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, July 2016
 

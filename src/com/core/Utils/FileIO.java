@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // FileIO.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, March 2015
 

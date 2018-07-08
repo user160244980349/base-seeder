@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // OBeanPanel.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, August 2016, 
 
@@ -30,12 +30,10 @@ package com.core.Utils;
 
 
 import javax.swing.*;
-import java.awt.event.*;
 import java.awt.*;
 
 import com.sun.star.beans.*;
 import com.sun.star.lang.*;
-import com.sun.star.uno.*;
 import com.sun.star.frame.*;
 import com.sun.star.awt.*;
 

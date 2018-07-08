@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // Info.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, December 2016
 
@@ -39,7 +39,6 @@ import com.sun.star.util.*;
 import com.sun.star.deployment.*;
 
 import com.sun.star.uno.Exception;
-import com.sun.star.io.IOException;
 import com.sun.star.lang.IllegalArgumentException;
 
 

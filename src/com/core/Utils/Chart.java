@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // Chart.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, September 2014
 
@@ -11,37 +11,21 @@ package com.core.Utils;
 */
 
 
-import java.io.*;
-import java.awt.Point;
-import java.util.*;
-import java.awt.image.*;
-import javax.imageio.*;
-import java.util.regex.*;
-
 import com.sun.star.beans.*;
-import com.sun.star.comp.helper.*;
-import com.sun.star.frame.*;
-import com.sun.star.bridge.*;
 import com.sun.star.lang.*;
 import com.sun.star.text.*;
 import com.sun.star.uno.*;
 import com.sun.star.awt.*;
-import com.sun.star.util.*;
 import com.sun.star.drawing.*;
 import com.sun.star.document.*;
 import com.sun.star.container.*;
-import com.sun.star.linguistic2.*;
-import com.sun.star.graphic.*;
 import com.sun.star.sheet.*;
-import com.sun.star.style.*;
 import com.sun.star.table.*;
-import com.sun.star.embed.*;
 
 import com.sun.star.chart.*;     // using chart 
 // import com.sun.star.chart2.*;
 
 import com.sun.star.uno.Exception;
-import com.sun.star.io.IOException;
 
 
 public class Chart

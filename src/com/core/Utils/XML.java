@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // XML.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, December 2016
 
@@ -34,15 +34,8 @@ import org.xml.sax.*;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.*;
 import javax.xml.transform.dom.*;
-import javax.xml.transform.sax.*;
 
 import org.w3c.dom.*;
-import org.w3c.dom.ls.*;
-
-
-import com.sun.star.frame.*;
-import com.sun.star.lang.*;
-
 
 
 public class XML

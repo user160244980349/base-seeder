@@ -1,4 +1,4 @@
-package com.core.Utils;
+package com.core.utils;
 // Jdbc.java
 // Andrew Davison, ad@fivedots.coe.psu.ac.th, April 2016
 

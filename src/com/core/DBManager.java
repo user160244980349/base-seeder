@@ -1,21 +1,22 @@
 package com.core;
 
-import com.core.Utils.Base;
-import com.core.Utils.Lo;
+import com.core.utils.Base;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.sdb.XOfficeDatabaseDocument;
 
 public class DBManager {
 
-	private String fileName = null;
-	XOfficeDatabaseDocument odbDoc = null;
+	private String filename = null;
+	private XComponentLoader xComponentLoader = null;
+	private XOfficeDatabaseDocument odbDoc = null;
 
-	public DBManager(String fileName) {
-		this.fileName = fileName;
+	public DBManager(XComponentLoader loader, String filename) {
+		this.filename = filename;
+		xComponentLoader = loader;
 	}
 
-	public void open(XComponentLoader loader) {
-		odbDoc = Base.openBaseDoc(fileName, loader);
+	public void open() {
+		odbDoc = Base.openBaseDoc(filename, xComponentLoader);
 	}
 
 	public void close() {
