@@ -61,6 +61,7 @@ import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.CloseVetoException;
 import com.sun.star.util.XCloseable;
+import ooo.connector.BootstrapPipeConnector;
 import ooo.connector.BootstrapSocketConnector;
 
 import java.net.URLClassLoader;
@@ -123,8 +124,6 @@ public class Lo {
            service: com.sun.star.report.ReportDefinition
 
 */
-	// LibreOffice path
-	public static String officePath = null;
 	// remote component context
 	private static XComponentContext xcc = null;
 	// remote desktop UNO service
@@ -349,12 +348,8 @@ public class Lo {
 	{
 		XComponentContext xcc = null;   // the remote office component context
 		try {
-			if (officePath == null) {
-				xcc = Bootstrap.bootstrap();  //  get remote office component context
-				// Connect to office, if office is not running then it's started
-			} else {
-				xcc = BootstrapSocketConnector.bootstrap(officePath);
-			}
+			xcc = Bootstrap.bootstrap();  //  get remote office component context
+			// Connect to office, if office is not running then it's started
 		} catch (BootstrapException e) {
 			System.out.println("Unable to bootstrap Office");
 		}
