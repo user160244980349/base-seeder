@@ -1,6 +1,6 @@
 package com.core;
 
-import com.core.utils.Base;
+import com.core.utilities.Base;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.sdb.XOfficeDatabaseDocument;
 

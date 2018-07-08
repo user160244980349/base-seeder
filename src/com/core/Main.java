@@ -1,6 +1,6 @@
 package com.core;
 
-import com.core.utils.Lo;
+import com.core.utilities.Lo;
 import com.sun.star.frame.XComponentLoader;
 
 public class Main {
