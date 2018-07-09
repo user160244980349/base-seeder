@@ -13,22 +13,6 @@ import java.util.Vector;
 
 public class TableManager {
 
-	public String GetURL(String sUrl) {
-		try {
-			if (sUrl.indexOf("private:") != 0) {
-				java.io.File sourceFile = new java.io.File(sUrl);
-				StringBuffer sbTmp = new StringBuffer("file:///");
-				sbTmp.append(sourceFile.getCanonicalPath().replace('\\', '/'));
-				sUrl = sbTmp.toString();
-			}
-			return sUrl;
-		} catch (java.lang.Exception e) {
-			e.printStackTrace(System.err);
-			System.exit(1);
-			return null;
-		}
-	}
-
 	public ArrayList<Vector<String>> GetTable(XComponentLoader xCompLoader, String filename) {
 		try {
 			XComponent xComp = Lo.openDoc(filename, xCompLoader);
