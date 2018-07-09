@@ -15,7 +15,7 @@ public class Main {
 		TableManager tableManager = new TableManager();
 		DBManager dbManager = new DBManager(xComponentLoader, odbDoc);
 
-		tableManager.Run(xComponentLoader, odtDoc);
+		tableManager.GetTable(xComponentLoader, odtDoc);
 
 		dbManager.open();
 		dbManager.querySmth();
