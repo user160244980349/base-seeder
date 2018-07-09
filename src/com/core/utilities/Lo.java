@@ -310,11 +310,12 @@ public class Lo {
     Once we have a component loader, we can load a document. 
     xcc, mcFactory, and xDesktop are stored as static globals.
   */ {
-		System.out.println("Loading Office...");
+		System.out.println("Loading Office");
 		if (usingPipes)
 			xcc = bootstrapContext(); // connects to office via pipes
 		else
 			xcc = socketContext();    // connects to office via a socket
+
 		if (xcc == null) {
 			System.out.println("Office context could not be created");
 			System.exit(1);
@@ -372,7 +373,7 @@ public class Lo {
 			cmdArray[6] = "--accept=socket,host=localhost,port=" +
 					SOCKET_PORT + ";urp;StarOffice.ServiceManager;";
 			Process p = Runtime.getRuntime().exec(cmdArray);
-			delay(5000);
+
 			if (p != null)
 				System.out.println("Office process created");
 			// Wait 5 seconds, until office is in listening mode
@@ -397,8 +398,17 @@ public class Lo {
 					localFactory.createInstanceWithContext(
 							"com.sun.star.connection.Connector", localContext));
 
-			XConnection connection = connector.connect(
-					"socket,host=localhost,port=" + SOCKET_PORT);
+			XConnection connection = null;
+			for (int i = 0; i < 20; i++) {
+				System.out.println("Connecting to office");
+				try {
+					connection = connector.connect("socket,host=localhost,port=" + SOCKET_PORT);
+				} catch (java.lang.Exception e) {
+					delay(1000);
+				}
+				if (connection != null) { System.out.println("Connected"); break; }
+				if (i == 9) { System.out.println("Abort after 20 attempts"); }
+			}
 
 			// create a bridge to Office via the socket
 			XBridgeFactory bridgeFactory = Lo.qi(XBridgeFactory.class,
