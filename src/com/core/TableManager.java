@@ -8,6 +8,8 @@ import com.sun.star.table.XTableColumns;
 import com.sun.star.table.XTableRows;
 import com.sun.star.text.*;
 import com.sun.star.uno.UnoRuntime;
+import java.util.ArrayList;
+import java.util.Vector;
 
 public class TableManager {
 
@@ -27,39 +29,52 @@ public class TableManager {
 		}
 	}
 
-	public void Run(XComponentLoader xCompLoader, String filename) {
+	public ArrayList<Vector<String>> GetTable(XComponentLoader xCompLoader, String filename) {
 		try {
 			XComponent xComp = Lo.openDoc(filename, xCompLoader);
 			if (xComp != null) {
 				XTextTablesSupplier xTextTablesSupplier = UnoRuntime.queryInterface(XTextTablesSupplier.class, xComp);
 				XNameAccess xNameAccess = xTextTablesSupplier.getTextTables();
 				String[] tableElements = xNameAccess.getElementNames();
-				Object table = xNameAccess.getByName(tableElements[0]);
-				XTextTable aTextTable = UnoRuntime.queryInterface(XTextTable.class, table);
-				XTextTableCursor xTableCursor = aTextTable.createCursorByCellName("A2");
+				Object tableObject = xNameAccess.getByName(tableElements[0]);
+				XTextTable aTextTable = UnoRuntime.queryInterface(XTextTable.class, tableObject);
+				XTextTableCursor xTableCursorRow = aTextTable.createCursorByCellName("A2");
 				XTableRows rows = aTextTable.getRows();
+				XTextTableCursor xTableCursorCol = aTextTable.createCursorByCellName("A2");
 				XTableColumns cols = aTextTable.getColumns();
 
-				for (int j = 1; j <= cols.getCount(); j++) {
-					for (int i = 1; i < rows.getCount(); i++) {
-						String sCellName = xTableCursor.getRangeName();
-						XTextRange xTextRange = UnoRuntime.queryInterface(XText.class, aTextTable.getCellByName(sCellName));
-						System.out.print(xTextRange.getString() + " ");
-
-                        xTableCursor.goDown((short) 1, false);
-					}
-                    System.out.println();
-                    xTableCursor.gotoCellByName("A2", false);
-                    for (int k = 0; k < j; k++) {
-                        xTableCursor.goRight((short) 1, false);
+                ArrayList<Vector<String>> table = new ArrayList<>();
+                for (int i = 1; i < rows.getCount(); i++) {
+                    Vector<String> rowCells = new Vector<>();
+                    for (int j = 1; j <= cols.getCount(); j++) {
+                        String sCellName = xTableCursorRow.getRangeName();
+                        XTextRange xTextRange = UnoRuntime.queryInterface(XText.class, aTextTable.getCellByName(sCellName));
+                        rowCells.add(xTextRange.getString());
+                        xTableCursorRow.goRight((short) 1, false);
                     }
-				}
+                    table.add(rowCells);
+                    xTableCursorCol.goDown((short) 1, false);
+                    xTableCursorRow.gotoCellByName(xTableCursorRow.getRangeName(), false);
+                }
+
+                // output
+                for (Vector<String> row: table) {
+                    for (String cell: row) {
+                        System.out.print(cell + " ");
+                    }
+                    System.out.println();
+                }
+
 				Lo.closeDoc(xComp);
-			} else
-				System.exit(1);
+                return table;
+			} else {
+                System.exit(1);
+                return null;
+            }
 		} catch (java.lang.Exception e) {
 			e.printStackTrace(System.err);
 			System.exit(1);
+			return null;
 		}
 	}
 }
