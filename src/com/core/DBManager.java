@@ -9,6 +9,9 @@ import com.sun.star.sdbc.XConnection;
 import com.sun.star.sdbc.XDataSource;
 import com.sun.star.sdbc.XResultSet;
 
+import java.util.ArrayList;
+import java.util.Vector;
+
 public class DBManager {
 
 	private String _filename = null;
@@ -24,24 +27,8 @@ public class DBManager {
 		_odbDoc = Base.openBaseDoc(_filename, _loader);
 	}
 
-	public void doSmth() {
-		XDataSource dataSource = _odbDoc.getDataSource();
+	public void doSmth(ArrayList<Vector<String>> table) {
 
-		try {
-			XConnection connection = dataSource.getConnection("", "");
-
-			Base.exec("CREATE TABLE SPIES " +
-					"( FIRSTNAME VARCHAR(50), LASTNAME VARCHAR(50), ID VARCHAR(50), " +
-					"PRIMARY KEY (ID) )", connection);
-
-			Base.exec("INSERT INTO SPIES VALUES( 'James', 'Bond', '007')", connection);
-			Base.exec("INSERT INTO SPIES VALUES( 'James', 'Bond', '007')", connection);
-			Base.exec("INSERT INTO SPIES VALUES( 'Johnny', 'English', '013')", connection);
-			Base.exec("INSERT INTO SPIES VALUES( 'Maxwell', 'Smart', 'Agent 86')", connection);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void querySmth() {
