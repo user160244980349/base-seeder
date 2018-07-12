@@ -15,10 +15,10 @@ public class Main {
 		TableManager tableManager = new TableManager();
 		DBManager dbManager = new DBManager(xComponentLoader, odbDoc);
 
-		tableManager.GetTable(xComponentLoader, odtDoc);
+		//tableManager.GetTable(xComponentLoader, odtDoc);
 
 		dbManager.open();
-		dbManager.querySmth();
+		dbManager.doSmth();
 		dbManager.close();
 
 		Lo.closeOffice();
