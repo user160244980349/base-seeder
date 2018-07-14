@@ -30,13 +30,10 @@ public class DBManager {
         try {
             XConnection connection = dataSource.getConnection("", "");
 
-//            todo: insert
-//            XResultSet rs = Base.executeQuery("SELECT * FROM developer", connection);
-//            BaseTablePrinter.printResultSet(rs);
-//            Base.exec("INSERT INTO developer VALUES('kek')", connection);
+            int result1 = addUnique(connection, "*", "developer", "name", "kek6");
+            System.out.println("ID: " + result1);
 
-//            int result1 = addUnique(connection, "*", "developer", "name", "kek");
-//            Base.exec("INSERT INTO program VALUES (value, result1, result2, result3, result4)", connection);
+//            Base.exec("INSERT INTO \"program\" (\"name\",\"id_developer\",\"id_profile\",\"id_department\",\"id_direction\") VALUES (value, result1, result2, result3, result4)", connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -48,14 +45,14 @@ public class DBManager {
                                                  .append(" WHERE ").append(where)
                                                  .append(" = '").append(value).append("'");
         XResultSet rs = Base.executeQuery(query.toString(), connection);
-        BaseTablePrinter.printResultSet(rs);
+//        BaseTablePrinter.printResultSet(rs);
         if (rs != null) {
             try {
                 if (rs.getRow() == 0) {
                     System.out.println("Нет записи, добавление");
-                    insertOne(connection, from, value);
+                    insertOne(connection, from, where, value);
                 }
-                return getId(connection, "id", "department", "name", "kek");
+                return getId(connection, select, from, where, value);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -69,10 +66,10 @@ public class DBManager {
                                                  .append(" WHERE ").append(where)
                                                  .append(" = '").append(value).append("'");
         XResultSet rs = Base.executeQuery(query.toString(), connection);
-        BaseTablePrinter.printResultSet(rs);
         if (rs != null) {
-            XRow xRow = Lo.qi(XRow.class, rs);
             try {
+                XRow xRow = Lo.qi(XRow.class, rs);
+                rs.next();
                 return xRow.getInt(1);
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -81,11 +78,11 @@ public class DBManager {
         return -1;
     }
 
-    protected void insertOne(XConnection connection, String into, String value) {
-        StringBuilder query = new StringBuilder().append("INSERT INTO ").append(into)
+    protected void insertOne(XConnection connection, String into, String field, String value) {
+        StringBuilder query = new StringBuilder().append("INSERT INTO \"").append(into).append("\"")
+                                                 .append(" (\"").append(field).append("\")")
                                                  .append(" VALUES('").append(value).append("')");
-        XResultSet rs = Base.executeQuery(query.toString(), connection);
-        BaseTablePrinter.printResultSet(rs);
+        Base.exec(query.toString(), connection);
     }
 
 	public void close() {
