@@ -18,7 +18,7 @@ public class Main {
 		//tableManager.GetTable(xComponentLoader, odtDoc);
 
 		dbManager.open();
-		dbManager.doSmth();
+		dbManager.runOneToMany();
 		dbManager.close();
 
 		Lo.closeOffice();
