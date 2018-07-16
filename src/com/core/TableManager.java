@@ -11,9 +11,9 @@ import com.sun.star.uno.UnoRuntime;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class TableManager {
+class TableManager {
 
-	public ArrayList<Vector<String>> GetTable(XComponentLoader xCompLoader, String filename) {
+	ArrayList<Vector<String>> GetTable(XComponentLoader xCompLoader, String filename) {
 		try {
 			XComponent xComp = Lo.openDoc(filename, xCompLoader);
 			if (xComp != null) {
@@ -42,12 +42,12 @@ public class TableManager {
                 }
 
                 // output
-                for (Vector<String> row: table) {
-                    for (String cell: row) {
-                        System.out.print(cell + " ");
-                    }
-                    System.out.println();
-                }
+//                for (Vector<String> row: table) {
+//                    for (String cell: row) {
+//                        System.out.print(cell + " ");
+//                    }
+//                    System.out.println();
+//                }
 
 				Lo.closeDoc(xComp);
                 return table;

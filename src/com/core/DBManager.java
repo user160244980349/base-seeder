@@ -5,21 +5,20 @@ import com.core.utilities.Lo;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.sdb.XOfficeDatabaseDocument;
 import com.sun.star.sdbc.*;
-
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Vector;
 
 public class DBManager {
 
-	private String _filename = null;
-	private XComponentLoader _loader = null;
-	private XOfficeDatabaseDocument _odbDoc = null;
-	private StringBuilder _query = null;
+	private String _filename;
+	private XComponentLoader _loader;
+	private XOfficeDatabaseDocument _odbDoc;
+	private StringBuilder _query;
 
-	public DBManager(XComponentLoader loader, String filename) {
+	DBManager(XComponentLoader loader, String filename) {
 		_filename = filename;
 		_loader = loader;
+        _odbDoc = null;
         _query = new StringBuilder();
 	}
 
@@ -27,38 +26,42 @@ public class DBManager {
 		_odbDoc = Base.openBaseDoc(_filename, _loader);
 	}
 
-	public void runOneToMany() { //ArrayList<Vector<String>> table
+	public void run(Configurator conf) {
         XDataSource dataSource = _odbDoc.getDataSource();
         try {
             XConnection connection = dataSource.getConnection("", "");
-
-            String mainEntity            = "program";
-            Vector<String> simpleAttrs   = new Vector<>(Collections.singletonList("example4_program"));
-            Vector<String> entities      = new Vector<>(Arrays.asList("direction", "profile", "department", "developer"));
-            Vector<String> attrsEntities = new Vector<>(Arrays.asList("name", "name", "name", "name"));
-            Vector<String> values        = new Vector<>(Arrays.asList("example_direction", "example_profile", "example_department", "example_developer"));
-            Vector<String> attrsMain     = new Vector<>(Arrays.asList("name", "id_direction", "id_profile", "id_department", "id_developer"));
-
-            addToMain(connection, mainEntity, simpleAttrs, entities, attrsEntities, values, attrsMain);
+            createRecords(connection, conf);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 	}
 
-	public void addToMain(XConnection connection, String mainEntity, Vector<String> simpleAttrs, Vector<String> entities,
-                               Vector<String> attrsEntities, Vector<String> values, Vector<String> attrsMain) {
-        Vector<String> results = new Vector<>(simpleAttrs);
-
-        for (int i = 0; i < entities.size(); i++) {
-            Vector<String> a = new Vector<>(Collections.singletonList(attrsEntities.elementAt(i)));
-            Vector<String> v = new Vector<>(Collections.singletonList(values.elementAt(i)));
-            Integer currentId = addIfNotExists(connection, entities.elementAt(i), a, v);
-            results.add(currentId.toString());
-        }
-        addIfNotExists(connection, mainEntity, attrsMain, results);
+	private void createRecords(XConnection connection, Configurator conf) {
+	    for (Vector<String> values: conf._table) {
+            Vector<String> attrsEntities = new Vector<>(conf._attrsEntities);
+            Vector<String> results = new Vector<>();
+            results.add(values.elementAt(0));
+            values.remove(0);
+            for (int i = 0; i < conf._numAttrsEntities; i++) {
+                Vector<String> a = new Vector<>(Collections.singletonList(attrsEntities.elementAt(i)));
+                Vector<String> v = new Vector<>(Collections.singletonList(values.elementAt(i)));
+                Integer currentId = addIfNotExists(connection, conf._entities.elementAt(i), a, v);
+                results.add(currentId.toString());
+            }
+            for (int i = 0; i < conf._numAttrsEntities; i++) {
+                attrsEntities.remove(0);
+                values.remove(0);
+            }
+            Integer idMain = addIfNotExists(connection, conf._mainEntity, conf._attrsMain, results);
+            Integer idSecondary = addIfNotExists(connection, conf._secondaryEntity, attrsEntities, values);
+            results.removeAllElements();
+            results.add(idMain.toString());
+            results.add(idSecondary.toString());
+            addIfNotExists(connection, conf._manyToManyPivot, conf._pivotAttrs, results);
+	    }
     }
 
-    public int addIfNotExists(XConnection connection, String from, Vector<String> attrs, Vector<String> values) {
+    private int addIfNotExists(XConnection connection, String from, Vector<String> attrs, Vector<String> values) {
         _query.append("SELECT " ).append("*")
                 .append(" FROM ").append(from)
                 .append(" WHERE ");
@@ -72,7 +75,7 @@ public class DBManager {
             try {
                 rs.next();
                 if (rs.getRow() == 0) {
-                    System.out.println("No record, adding");
+                    //System.out.println("No record, adding");
                     insert(connection, from, attrs, values);
                     return addIfNotExists(connection, from, attrs, values);
                 } else {
@@ -86,7 +89,7 @@ public class DBManager {
         return -1;
     }
 
-    public void insert(XConnection connection, String into, Vector<String> attrs, Vector<String> values) {
+    private void insert(XConnection connection, String into, Vector<String> attrs, Vector<String> values) {
         _query.append("INSERT INTO \"").append(into).append("\" (");
         for (String attr : attrs) {
             _query.append("\"").append(attr).append("\",");
