@@ -53,11 +53,13 @@ public class DBManager {
                 values.remove(0);
             }
             Integer idMain = addIfNotExists(connection, conf._mainEntity, conf._attrsMain, results);
-            Integer idSecondary = addIfNotExists(connection, conf._secondaryEntity, attrsEntities, values);
-            results.removeAllElements();
-            results.add(idMain.toString());
-            results.add(idSecondary.toString());
-            addIfNotExists(connection, conf._manyToManyPivot, conf._pivotAttrs, results);
+            if (!conf._manyToManyPivot.equals("") && !conf._secondaryEntity.equals("")) {
+                Integer idSecondary = addIfNotExists(connection, conf._secondaryEntity, attrsEntities, values);
+                results.removeAllElements();
+                results.add(idMain.toString());
+                results.add(idSecondary.toString());
+                addIfNotExists(connection, conf._manyToManyPivot, conf._pivotAttrs, results);
+            }
 	    }
     }
 
