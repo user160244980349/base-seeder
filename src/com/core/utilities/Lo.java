@@ -400,14 +400,14 @@ public class Lo {
 
 			XConnection connection = null;
 			for (int i = 0; i < 20; i++) {
-				if (connection != null) { System.out.println("Connected"); break; }
-				System.out.println("Connecting to office");
+				System.out.println("Connecting to Office");
 				try {
 					connection = connector.connect("socket,host=localhost,port=" + SOCKET_PORT);
+					System.out.println("Connected");
+					break;
 				} catch (java.lang.Exception e) {
 					delay(1000);
 				}
-				if (i == 19) { System.out.println("Abort after 20 attempts"); }
 			}
 
 			// create a bridge to Office via the socket
